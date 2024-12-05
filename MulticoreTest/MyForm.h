@@ -1,5 +1,7 @@
 #pragma once
 
+#include"Model.h"
+
 namespace CppWinForm1 {
 
 	using namespace System;
@@ -17,7 +19,8 @@ namespace CppWinForm1 {
 	public:
 		MyForm(void)
 		{
-			InitializeComponent();
+			cores = gcnew System::Collections::Generic::List<Button^>();
+			model = new Model();
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -74,10 +77,8 @@ namespace CppWinForm1 {
 
 
 	private:
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-
+		System::Collections::Generic::List<Button^>^ cores;
+		Model* model;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -120,6 +121,7 @@ namespace CppWinForm1 {
 			this->tb_corecnt->Name = L"tb_corecnt";
 			this->tb_corecnt->Size = System::Drawing::Size(107, 23);
 			this->tb_corecnt->TabIndex = 0;
+			this->tb_corecnt->TextChanged += gcnew System::EventHandler(this, &MyForm::InitializeButton);
 			// 
 			// tb_ubcorecnt
 			// 
@@ -352,7 +354,34 @@ namespace CppWinForm1 {
 
 		}
 #pragma endregion
-private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void InitializeButton(System::Object^ sender, System::EventArgs^ e) {
+	if (this->tb_corecnt->Text != "") {
+		this->model = new Model(Convert::ToInt32(this->tb_corecnt->Text));
+
+		int butcnt = Convert::ToInt32(this->tb_corecnt->Text);
+
+		this->tableLayoutPanel1->Controls->Clear();
+		this->tableLayoutPanel1->ColumnStyles->Clear();
+		this->tableLayoutPanel1->RowStyles->Clear();
+		this->cores->Clear();
+
+		int gridSize = static_cast<int>(Math::Ceiling(Math::Sqrt(butcnt)));
+
+		this->tableLayoutPanel1->ColumnCount = gridSize;
+		this->tableLayoutPanel1->RowCount = gridSize;
+
+		for (int i = 0; i < gridSize; i++) {
+			this->tableLayoutPanel1->ColumnStyles->Add(gcnew ColumnStyle(SizeType::Percent, 100.0 / gridSize));
+			this->tableLayoutPanel1->RowStyles->Add(gcnew RowStyle(SizeType::Percent, 100.0 / gridSize));
+		}
+		for (int i = 0; i < butcnt; i++) {
+			Button^ but = gcnew Button();
+			but->Text = "";
+			but->Dock = DockStyle::Fill;
+			this->cores->Add(but);
+			this->tableLayoutPanel1->Controls->Add(but);
+		}
+	}
 }
 };
 }
