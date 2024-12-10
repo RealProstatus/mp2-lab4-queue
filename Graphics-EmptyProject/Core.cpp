@@ -18,7 +18,7 @@ void Core::cycle() {
 	if (Busy) {
 		CurrentStep--;
 		if (CurrentStep == 0) {
-			Busy = false;
+			Busy == false;
 			CurrentTaskID = -1;
 		}
 	}
@@ -29,5 +29,3 @@ void Core::cycle() {
 
 int Core::getIdleCycle() const { return IdleCycle; }
 bool Core::isBusy() const { return Busy; }
-int Core::getCurrentTaskID() const { return CurrentTaskID; }
-int Core::getCurrentStep() const { return CurrentStep; }

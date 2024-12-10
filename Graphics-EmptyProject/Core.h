@@ -13,6 +13,4 @@ public:
 	void cycle();
 	int getIdleCycle() const;
 	bool isBusy() const;
-	int getCurrentTaskID() const;
-	int getCurrentStep() const;
 };
