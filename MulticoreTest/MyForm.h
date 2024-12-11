@@ -91,6 +91,9 @@ namespace CppWinForm1 {
 	private: System::Windows::Forms::Label^ label13;
 	private: System::Windows::Forms::TextBox^ s_tb_donetaskscnt;
 	private: System::Windows::Forms::Label^ label12;
+	private: System::Windows::Forms::TextBox^ s_tb_idlecycles;
+
+	private: System::Windows::Forms::Label^ label14;
 		   Model* model;
 
 #pragma region Windows Form Designer generated code
@@ -133,6 +136,8 @@ namespace CppWinForm1 {
 			this->label11 = (gcnew System::Windows::Forms::Label());
 			this->s_tb_curcyc = (gcnew System::Windows::Forms::TextBox());
 			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->label14 = (gcnew System::Windows::Forms::Label());
+			this->s_tb_idlecycles = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->groupBox3->SuspendLayout();
@@ -219,9 +224,9 @@ namespace CppWinForm1 {
 				static_cast<System::Byte>(204)));
 			this->label3->Location = System::Drawing::Point(12, 89);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(146, 20);
+			this->label3->Size = System::Drawing::Size(205, 20);
 			this->label3->TabIndex = 10;
-			this->label3->Text = L"Количество ядер:";
+			this->label3->Text = L"Количество ядер задачи:";
 			// 
 			// label4
 			// 
@@ -241,9 +246,9 @@ namespace CppWinForm1 {
 				static_cast<System::Byte>(204)));
 			this->label5->Location = System::Drawing::Point(12, 123);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(161, 20);
+			this->label5->Size = System::Drawing::Size(220, 20);
 			this->label5->TabIndex = 12;
-			this->label5->Text = L"Количество тактов:";
+			this->label5->Text = L"Количество тактов задачи:";
 			// 
 			// label6
 			// 
@@ -364,7 +369,7 @@ namespace CppWinForm1 {
 			this->groupBox2->ForeColor = System::Drawing::SystemColors::ActiveBorder;
 			this->groupBox2->Location = System::Drawing::Point(420, 9);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(832, 530);
+			this->groupBox2->Size = System::Drawing::Size(524, 530);
 			this->groupBox2->TabIndex = 20;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Отображение";
@@ -387,6 +392,8 @@ namespace CppWinForm1 {
 			// 
 			// groupBox3
 			// 
+			this->groupBox3->Controls->Add(this->s_tb_idlecycles);
+			this->groupBox3->Controls->Add(this->label14);
 			this->groupBox3->Controls->Add(this->s_tb_mistaskscnt);
 			this->groupBox3->Controls->Add(this->label13);
 			this->groupBox3->Controls->Add(this->s_tb_donetaskscnt);
@@ -491,11 +498,33 @@ namespace CppWinForm1 {
 			this->label10->TabIndex = 22;
 			this->label10->Text = L"Текущий такт:";
 			// 
+			// label14
+			// 
+			this->label14->AutoSize = true;
+			this->label14->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label14->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->label14->Location = System::Drawing::Point(3, 170);
+			this->label14->Name = L"label14";
+			this->label14->Size = System::Drawing::Size(125, 20);
+			this->label14->TabIndex = 29;
+			this->label14->Text = L"Такты простоя:";
+			// 
+			// s_tb_idlecycles
+			// 
+			this->s_tb_idlecycles->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->s_tb_idlecycles->Location = System::Drawing::Point(260, 170);
+			this->s_tb_idlecycles->Name = L"s_tb_idlecycles";
+			this->s_tb_idlecycles->Size = System::Drawing::Size(107, 23);
+			this->s_tb_idlecycles->TabIndex = 30;
+			this->s_tb_idlecycles->Text = L"0";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1264, 721);
+			this->ClientSize = System::Drawing::Size(978, 554);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->label8);
@@ -592,6 +621,7 @@ private: System::Void redrawStatistics() {
 	s_tb_tasksinqcnt->Text = Convert::ToString(model->getTasksCnt());
 	s_tb_mistaskscnt->Text = Convert::ToString(model->getMissedTasksCnt());
 	s_tb_donetaskscnt->Text = Convert::ToString(model->getDoneTasksCnt());
+	s_tb_idlecycles->Text = Convert::ToString(model->getIdleCycles());
 }
 private: System::Void redrawCores() {
 	int controlCount = tableLayoutPanel1->Controls->Count;
@@ -614,21 +644,21 @@ private: System::Void redrawCores() {
 		if (buttons[i]->Text != newText) {
 			buttons[i]->Text = newText;
 		}
-	}
-	/*for (int i = 0; i < tableLayoutPanel1->Controls->Count; i++) {
-		Button^ but = dynamic_cast<System::Windows::Forms::Button^>
-			(tableLayoutPanel1->Controls[i]);
-		Core& core = model->getCore(i);
-		if (core.getCurrentTaskID() != -1) {
-			String^ s = Convert::ToString(core.getCurrentTaskID()) + ":" +
-				Convert::ToString(core.getCurrentStep());
-			but->Text = s;
+		if (buttons[i]->Text != "0"){
+			buttons[i]->BackColor = generateColor(core.getCurrentTaskID());
 		}
 		else {
-			but->Text = "0";
+			buttons[i]->BackColor = SystemColors::Control;
 		}
-	}*/
+	}
 }
+private: Color generateColor(int id) {
+		   int r = (id * 31) % 256;
+		   int g = (id * 73) % 256;
+		   int b = (id * 97) % 256;
+
+		   return Color::FromArgb(r, g, b);
+	   }
 private: System::Void b_reset_Click(System::Object^ sender, System::EventArgs^ e) {
 	System::String^ appPath = System::Diagnostics::Process::GetCurrentProcess()->MainModule->FileName;
 	System::Diagnostics::Process::Start(appPath);

@@ -40,3 +40,4 @@ int Model::getMissedTasksCnt() const noexcept { return MissedTasks; }
 int Model::getDoneTasksCnt() const noexcept { return DoneTasksCnt; }
 int Model::getTasksCnt() const noexcept { return TasksCnt; }
 Core& Model::getCore(int index) { return cpu.getCore(index); }
+int Model::getIdleCycles() const { return cpu.getIdleCycles(); }

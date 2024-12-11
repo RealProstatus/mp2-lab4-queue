@@ -22,4 +22,5 @@ public:
 
 	int getTasksOnWorkCnt() const;
 	Core& getCore(int index);
+	int getIdleCycles() const;
 };

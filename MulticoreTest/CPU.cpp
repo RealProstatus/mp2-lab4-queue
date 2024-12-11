@@ -54,3 +54,11 @@ Core& CPU::getCore(int index) {
 	else
 		throw 2531;
 }
+
+int CPU::getIdleCycles() const {
+	int sum = 0;
+	for (Core core : Cores) {
+		sum += core.getIdleCycle();
+	}
+	return sum;
+}

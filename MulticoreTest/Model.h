@@ -25,4 +25,5 @@ public:
 	int getDoneTasksCnt() const noexcept;
 	int getTasksCnt() const noexcept;
 	Core& getCore(int index);
+	int getIdleCycles() const;
 };
