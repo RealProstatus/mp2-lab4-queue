@@ -594,7 +594,28 @@ private: System::Void redrawStatistics() {
 	s_tb_donetaskscnt->Text = Convert::ToString(model->getDoneTasksCnt());
 }
 private: System::Void redrawCores() {
-	for (int i = 0; i < tableLayoutPanel1->Controls->Count; i++) {
+	int controlCount = tableLayoutPanel1->Controls->Count;
+	array<Button^>^ buttons = gcnew array<Button^>(controlCount);
+	for (int i = 0; i < controlCount; i++) {
+		buttons[i] = dynamic_cast<Button^>(tableLayoutPanel1->Controls[i]);
+	}
+
+	for (int i = 0; i < controlCount; i++) {
+		Core& core = model->getCore(i);
+
+		String^ newText;
+		if (core.getCurrentTaskID() != -1) {
+			newText = Convert::ToString(core.getCurrentTaskID()) + ":" + Convert::ToString(core.getCurrentStep());
+		}
+		else {
+			newText = "0";
+		}
+
+		if (buttons[i]->Text != newText) {
+			buttons[i]->Text = newText;
+		}
+	}
+	/*for (int i = 0; i < tableLayoutPanel1->Controls->Count; i++) {
 		Button^ but = dynamic_cast<System::Windows::Forms::Button^>
 			(tableLayoutPanel1->Controls[i]);
 		Core& core = model->getCore(i);
@@ -606,7 +627,7 @@ private: System::Void redrawCores() {
 		else {
 			but->Text = "0";
 		}
-	}
+	}*/
 }
 private: System::Void b_reset_Click(System::Object^ sender, System::EventArgs^ e) {
 	System::String^ appPath = System::Diagnostics::Process::GetCurrentProcess()->MainModule->FileName;
