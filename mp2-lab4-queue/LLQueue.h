@@ -115,7 +115,19 @@ public:
         return tmp == stmp;
     }
 
+    bool operator!=(const LLQueue<T>& q) const {
+        return !(this->operator==(q));
+    }
+
     T front() {
-        if()
+        if (this->isEmpty()) throw EFrontInEmptyQueue();
+
+        return pFirst->val;
+    }
+
+    T back() {
+        if (this->isEmpty()) throw EBackInEmptyQueue();
+
+        return pLast->val;
     }
 };
