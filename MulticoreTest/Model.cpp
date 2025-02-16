@@ -2,7 +2,7 @@
 
 Model::Model(int CoreNum) {
 	cpu = CPU(CoreNum);
-	ExecutionQueue = TQueue<Task>();
+	ExecutionQueue = LLQueue<Task>();
 }
 void Model::addTask(Task t) {
 	try {

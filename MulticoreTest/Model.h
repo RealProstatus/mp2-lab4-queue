@@ -1,6 +1,6 @@
 #pragma once
 
-#include"../mp2-lab4-queue/TQueue.h"
+#include"../mp2-lab4-queue/LLQueue.h"
 #include"CPU.h"
 #include<set>
 
@@ -12,7 +12,7 @@ class Model {
 	int OldDoneTasks = 0;
 
 	CPU cpu;
-	TQueue<Task> ExecutionQueue;
+	LLQueue<Task> ExecutionQueue;
 
 public:
 	Model(int CoreNum = 6);
